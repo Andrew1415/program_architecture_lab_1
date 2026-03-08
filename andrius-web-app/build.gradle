@@ -11,9 +11,8 @@ def localAppData = System.getenv("LOCALAPPDATA")
 layout.buildDirectory = file(localAppData ? "${localAppData}/andrius-web-app-build" : ".gradle-build-local")
 
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 repositories {
