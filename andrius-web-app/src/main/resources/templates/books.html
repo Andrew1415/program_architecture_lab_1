@@ -3,32 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Catalog - MVC Demo</title>
+    <title>Book Catalog</title>
     <link rel="stylesheet" th:href="@{/css/app.css}">
 </head>
 <body>
 <main class="container">
-    <h1>Monolithic MVC Demo</h1>
-    <p>Static data loaded from server-side model class.</p>
+    <section class="hero">
+        <div>
+            <p class="eyebrow">Server-rendered CRUD</p>
+            <h1>Book Catalog</h1>
+            <p class="intro">Create, edit, and delete books with a simple Spring MVC and Thymeleaf flow.</p>
+        </div>
+    </section>
 
-    <table>
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Year</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="book : ${books}">
-            <td th:text="${book.id}"></td>
-            <td th:text="${book.title}"></td>
-            <td th:text="${book.author}"></td>
-            <td th:text="${book.year}"></td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="flash flash-success" th:if="${successMessage}" th:text="${successMessage}"></div>
+    <div class="flash flash-error" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+    <section class="panel form-panel">
+        <div class="section-heading">
+            <h2 th:text="${editingBookId != null} ? 'Edit Book' : 'Add Book'"></h2>
+            <a class="secondary-link" th:if="${editingBookId != null}" th:href="@{/books}">Cancel editing</a>
+        </div>
+
+        <form method="post"
+              th:action="${editingBookId != null} ? @{/books/{id}(id=${editingBookId})} : @{/books}"
+              th:object="${bookForm}"
+              class="book-form">
+            <label>
+                <span>Title</span>
+                <input type="text" th:field="*{title}" placeholder="Clean Code" maxlength="255">
+            </label>
+            <label>
+                <span>Author</span>
+                <input type="text" th:field="*{author}" placeholder="Robert C. Martin" maxlength="255">
+            </label>
+            <label>
+                <span>Year</span>
+                <input type="number" th:field="*{year}" min="1000" max="3000" placeholder="2008">
+            </label>
+            <button type="submit" th:text="${editingBookId != null} ? 'Save changes' : 'Add book'"></button>
+        </form>
+    </section>
+
+    <section class="panel table-panel">
+        <div class="section-heading">
+            <h2>All Books</h2>
+            <span class="count" th:text="${#lists.size(books)} + ' total'"></span>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Year</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(books)}">
+                <td colspan="5" class="empty-state">No books yet. Add the first one above.</td>
+            </tr>
+            <tr th:each="book : ${books}">
+                <td th:text="${book.id}"></td>
+                <td th:text="${book.title}"></td>
+                <td th:text="${book.author}"></td>
+                <td th:text="${book.year}"></td>
+                <td>
+                    <div class="actions">
+                        <a class="secondary-link" th:href="@{/books/{id}/edit(id=${book.id})}">Edit</a>
+                        <form method="post" th:action="@{/books/{id}/delete(id=${book.id})}"
+                              onsubmit="return confirm('Delete this book?');">
+                            <button type="submit" class="danger-button">Delete</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
 </main>
 </body>
 </html>
