@@ -24,13 +24,17 @@ public class Book {
     @Column(name = "publish_year", nullable = false)
     private int year;
 
+    @Column(name = "stock_quantity", nullable = false)
+    private int stockQuantity;
+
     protected Book() {
     }
 
-    public Book(String title, String author, int year) {
+    public Book(String title, String author, int year, int stockQuantity) {
         this.title = title;
         this.author = author;
         this.year = year;
+        this.stockQuantity = stockQuantity;
     }
 
     public Long getId() {
@@ -59,5 +63,13 @@ public class Book {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public int getStockQuantity() {
+        return stockQuantity;
+    }
+
+    public void setStockQuantity(int stockQuantity) {
+        this.stockQuantity = stockQuantity;
     }
 }

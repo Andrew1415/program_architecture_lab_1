@@ -41,6 +41,10 @@
                 <span>Year</span>
                 <input type="number" th:field="*{year}" min="1000" max="3000" placeholder="2008">
             </label>
+            <label>
+                <span>Stock</span>
+                <input type="number" th:field="*{stockQuantity}" min="0" max="100000" placeholder="5">
+            </label>
             <button type="submit" th:text="${editingBookId != null} ? 'Save changes' : 'Add book'"></button>
         </form>
     </section>
@@ -58,20 +62,25 @@
                 <th>Title</th>
                 <th>Author</th>
                 <th>Year</th>
+                <th>Stock</th>
                 <th>Actions</th>
             </tr>
             </thead>
             <tbody>
             <tr th:if="${#lists.isEmpty(books)}">
-                <td colspan="5" class="empty-state">No books yet. Add the first one above.</td>
+                <td colspan="6" class="empty-state">No books yet. Add the first one above.</td>
             </tr>
             <tr th:each="book : ${books}">
                 <td th:text="${book.id}"></td>
                 <td th:text="${book.title}"></td>
                 <td th:text="${book.author}"></td>
                 <td th:text="${book.year}"></td>
+                <td th:text="${book.stockQuantity}"></td>
                 <td>
                     <div class="actions">
+                        <form method="post" th:action="@{/books/{id}/purchase(id=${book.id})}">
+                            <button type="submit" th:disabled="${book.stockQuantity == 0}">Buy</button>
+                        </form>
                         <a class="secondary-link" th:href="@{/books/{id}/edit(id=${book.id})}">Edit</a>
                         <form method="post" th:action="@{/books/{id}/delete(id=${book.id})}"
                               onsubmit="return confirm('Delete this book?');">

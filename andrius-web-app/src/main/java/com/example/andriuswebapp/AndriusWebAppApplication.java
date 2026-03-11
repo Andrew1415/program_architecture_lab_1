@@ -2,12 +2,14 @@ package com.example.andriuswebapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 
 import java.net.URI;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
 @SpringBootApplication
+@EnableCaching
 public class AndriusWebAppApplication {
 
     public static void main(String[] args) {

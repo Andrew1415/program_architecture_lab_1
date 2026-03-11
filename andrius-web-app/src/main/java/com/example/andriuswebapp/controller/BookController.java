@@ -50,7 +50,12 @@ public class BookController {
             return "books";
         }
 
-        bookService.createBook(normalize(bookForm.getTitle()), normalize(bookForm.getAuthor()), bookForm.getYear());
+        bookService.createBook(
+                normalize(bookForm.getTitle()),
+                normalize(bookForm.getAuthor()),
+                bookForm.getYear(),
+                bookForm.getStockQuantity()
+        );
         redirectAttributes.addFlashAttribute("successMessage", "Book created.");
         return "redirect:/books";
     }
@@ -66,7 +71,13 @@ public class BookController {
         }
 
         try {
-            bookService.updateBook(id, normalize(bookForm.getTitle()), normalize(bookForm.getAuthor()), bookForm.getYear());
+            bookService.updateBook(
+                    id,
+                    normalize(bookForm.getTitle()),
+                    normalize(bookForm.getAuthor()),
+                    bookForm.getYear(),
+                    bookForm.getStockQuantity()
+            );
             redirectAttributes.addFlashAttribute("successMessage", "Book updated.");
             return "redirect:/books";
         } catch (NoSuchElementException exception) {
@@ -80,6 +91,21 @@ public class BookController {
         try {
             bookService.deleteBook(id);
             redirectAttributes.addFlashAttribute("successMessage", "Book deleted.");
+        } catch (NoSuchElementException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Book not found.");
+        }
+        return "redirect:/books";
+    }
+
+    @PostMapping("/books/{id}/purchase")
+    public String purchaseBook(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            boolean purchased = bookService.purchaseBook(id);
+            if (purchased) {
+                redirectAttributes.addFlashAttribute("successMessage", "Purchase completed.");
+            } else {
+                redirectAttributes.addFlashAttribute("errorMessage", "Book is out of stock.");
+            }
         } catch (NoSuchElementException exception) {
             redirectAttributes.addFlashAttribute("errorMessage", "Book not found.");
         }
@@ -102,10 +128,16 @@ public class BookController {
         if (bookForm.getYear() == null) {
             return "Year is required.";
         }
+        if (bookForm.getStockQuantity() == null) {
+            return "Stock is required.";
+        }
 
         int currentYear = Year.now().getValue() + 1;
         if (bookForm.getYear() < 1000 || bookForm.getYear() > currentYear) {
             return "Year must be between 1000 and " + currentYear + ".";
+        }
+        if (bookForm.getStockQuantity() < 0) {
+            return "Stock must be zero or greater.";
         }
 
         return null;
