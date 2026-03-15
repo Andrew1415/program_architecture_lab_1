@@ -1,0 +1,6 @@
+#FileLock
+#Wed Mar 11 10:09:17 EET 2026
+server=192.168.56.1\:50064
+hostName=KU-ISK-ENGINEER-ANDRIUS
+method=file
+id=19cdbf15598d19de3a06954269fa7c3189213dac008
