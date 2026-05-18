@@ -15,6 +15,7 @@ jobs:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     strategy:
+      fail-fast: false
       matrix:
         service:
           - andrius-web-app
@@ -41,4 +42,4 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build with Gradle Wrapper
-        run: ./gradlew build
+        run: ./gradlew 
