@@ -2,23 +2,31 @@ package com.example.andriuswebapp.controller;
 
 public class BookForm {
 
+    private String isbn = "";
     private String title = "";
     private String author = "";
     private Integer year;
-    private Integer stockQuantity = 1;
 
     public BookForm() {
     }
 
-    public BookForm(String title, String author, Integer year, Integer stockQuantity) {
+    public BookForm(String isbn, String title, String author, Integer year) {
+        this.isbn = isbn;
         this.title = title;
         this.author = author;
         this.year = year;
-        this.stockQuantity = stockQuantity;
     }
 
     public static BookForm fromBook(com.example.andriuswebapp.model.Book book) {
-        return new BookForm(book.getTitle(), book.getAuthor(), book.getYear(), book.getStockQuantity());
+        return new BookForm(book.getIsbn(), book.getTitle(), book.getAuthor(), book.getYear());
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 
     public String getTitle() {
@@ -43,13 +51,5 @@ public class BookForm {
 
     public void setYear(Integer year) {
         this.year = year;
-    }
-
-    public Integer getStockQuantity() {
-        return stockQuantity;
-    }
-
-    public void setStockQuantity(Integer stockQuantity) {
-        this.stockQuantity = stockQuantity;
     }
 }

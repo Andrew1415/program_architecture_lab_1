@@ -29,20 +29,28 @@ public class BookService {
                 .orElseThrow(() -> new NoSuchElementException("Book not found: " + id));
     }
 
-    @Transactional
-    @CacheEvict(value = "books", allEntries = true)
-    public Book createBook(String title, String author, int year, int stockQuantity) {
-        return bookRepository.save(new Book(title, author, year, stockQuantity));
+    public boolean isbnExists(String isbn) {
+        return bookRepository.existsByIsbn(isbn);
+    }
+
+    public boolean isbnExistsForAnotherBook(String isbn, Long id) {
+        return bookRepository.existsByIsbnAndIdNot(isbn, id);
     }
 
     @Transactional
     @CacheEvict(value = "books", allEntries = true)
-    public Book updateBook(Long id, String title, String author, int year, int stockQuantity) {
+    public Book createBook(String isbn, String title, String author, int year) {
+        return bookRepository.save(new Book(isbn, title, author, year, 0));
+    }
+
+    @Transactional
+    @CacheEvict(value = "books", allEntries = true)
+    public Book updateBook(Long id, String isbn, String title, String author, int year) {
         Book book = getBook(id);
+        book.setIsbn(isbn);
         book.setTitle(title);
         book.setAuthor(author);
         book.setYear(year);
-        book.setStockQuantity(stockQuantity);
         return bookRepository.save(book);
     }
 

@@ -27,20 +27,20 @@ class BookServiceTest {
     private BookService bookService;
 
     @Test
-    void createBookStoresProvidedStockQuantity() {
-        Book savedBook = new Book("Clean Architecture", "Robert C. Martin", 2017, 7);
+    void createBookInitializesLegacyStockToZero() {
+        Book savedBook = new Book("9780134494166", "Clean Architecture", "Robert C. Martin", 2017, 0);
         when(bookRepository.save(any(Book.class))).thenReturn(savedBook);
 
-        Book result = bookService.createBook("Clean Architecture", "Robert C. Martin", 2017, 7);
+        Book result = bookService.createBook("9780134494166", "Clean Architecture", "Robert C. Martin", 2017);
 
-        assertThat(result.getStockQuantity()).isEqualTo(7);
+        assertThat(result.getStockQuantity()).isZero();
         verify(bookRepository).save(any(Book.class));
     }
 
     @Test
     void getAllBooksReturnsRepositoryResultsInOrder() {
-        Book first = new Book("Domain-Driven Design", "Eric Evans", 2003, 5);
-        Book second = new Book("Refactoring", "Martin Fowler", 2018, 3);
+        Book first = new Book("9780321125217", "Domain-Driven Design", "Eric Evans", 2003, 5);
+        Book second = new Book("9780134757599", "Refactoring", "Martin Fowler", 2018, 3);
         when(bookRepository.findAllByOrderByIdAsc()).thenReturn(List.of(first, second));
 
         List<Book> result = bookService.getAllBooks();
@@ -60,16 +60,17 @@ class BookServiceTest {
 
     @Test
     void updateBookReplacesExistingFieldsAndSavesBook() {
-        Book existingBook = new Book("Old Title", "Old Author", 1999, 1);
+        Book existingBook = new Book("9780000000001", "Old Title", "Old Author", 1999, 1);
         when(bookRepository.findById(7L)).thenReturn(Optional.of(existingBook));
         when(bookRepository.save(existingBook)).thenReturn(existingBook);
 
-        Book result = bookService.updateBook(7L, "New Title", "New Author", 2026, 9);
+        Book result = bookService.updateBook(7L, "9780000000007", "New Title", "New Author", 2026);
 
+        assertThat(result.getIsbn()).isEqualTo("9780000000007");
         assertThat(result.getTitle()).isEqualTo("New Title");
         assertThat(result.getAuthor()).isEqualTo("New Author");
         assertThat(result.getYear()).isEqualTo(2026);
-        assertThat(result.getStockQuantity()).isEqualTo(9);
+        assertThat(result.getStockQuantity()).isEqualTo(1);
         verify(bookRepository).save(existingBook);
     }
 
@@ -117,7 +118,7 @@ class BookServiceTest {
     void updateBookThrowsWhenBookDoesNotExist() {
         when(bookRepository.findById(99L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> bookService.updateBook(99L, "Missing", "Nobody", 2024, 1))
+        assertThatThrownBy(() -> bookService.updateBook(99L, "9780000000099", "Missing", "Nobody", 2024))
                 .isInstanceOf(java.util.NoSuchElementException.class)
                 .hasMessageContaining("Book not found");
     }

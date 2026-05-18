@@ -15,6 +15,9 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true, length = 32)
+    private String isbn;
+
     @Column(nullable = false)
     private String title;
 
@@ -30,7 +33,8 @@ public class Book {
     protected Book() {
     }
 
-    public Book(String title, String author, int year, int stockQuantity) {
+    public Book(String isbn, String title, String author, int year, int stockQuantity) {
+        this.isbn = isbn;
         this.title = title;
         this.author = author;
         this.year = year;
@@ -39,6 +43,14 @@ public class Book {
 
     public Long getId() {
         return id;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 
     public String getTitle() {

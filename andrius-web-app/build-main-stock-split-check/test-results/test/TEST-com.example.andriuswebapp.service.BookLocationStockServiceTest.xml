@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.andriuswebapp.service.BookLocationStockServiceTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-04-12T18:37:18.173Z" hostname="ANDY-PC" time="0.053">
+  <properties/>
+  <testcase name="returnsEmptyWhenApiReturnsNotFound()" classname="com.example.andriuswebapp.service.BookLocationStockServiceTest" time="0.012"/>
+  <testcase name="returnsUnavailableWhenApiFails()" classname="com.example.andriuswebapp.service.BookLocationStockServiceTest" time="0.011"/>
+  <testcase name="returnsStocksWhenApiRespondsSuccessfully()" classname="com.example.andriuswebapp.service.BookLocationStockServiceTest" time="0.025"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

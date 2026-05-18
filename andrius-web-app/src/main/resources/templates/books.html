@@ -12,7 +12,16 @@
         <div>
             <p class="eyebrow">Server-rendered CRUD</p>
             <h1>Book Catalog</h1>
-            <p class="intro">Create, edit, and delete books with a simple Spring MVC and Thymeleaf flow.</p>
+            <p class="intro">Manage books, stock, and comments with simple local sign-in.</p>
+        </div>
+        <div class="hero-actions">
+            <div class="user-chip">
+                <strong th:text="${currentUserDisplayName}"></strong>
+                <span th:text="${currentUserEmail}"></span>
+            </div>
+            <form method="post" th:action="@{/logout}">
+                <button type="submit" class="secondary-button">Sign out</button>
+            </form>
         </div>
     </section>
 
@@ -21,14 +30,19 @@
 
     <section class="panel form-panel">
         <div class="section-heading">
-            <h2 th:text="${editingBookId != null} ? 'Edit Book' : 'Add Book'"></h2>
-            <a class="secondary-link" th:if="${editingBookId != null}" th:href="@{/books}">Cancel editing</a>
+            <h2>Add Book</h2>
         </div>
 
         <form method="post"
-              th:action="${editingBookId != null} ? @{/books/{id}(id=${editingBookId})} : @{/books}"
+              th:action="@{/books}"
               th:object="${bookForm}"
+              th:if="${editingBookId == null and isAdmin}"
               class="book-form">
+            <label>
+                <span>ISBN</span>
+                <input type="text" th:field="*{isbn}" placeholder="9780132350884" maxlength="32">
+            </label>
+            <button type="submit" class="secondary-button" formaction="/books/fetch-metadata">Fetch author/year</button>
             <label>
                 <span>Title</span>
                 <input type="text" th:field="*{title}" placeholder="Clean Code" maxlength="255">
@@ -41,12 +55,9 @@
                 <span>Year</span>
                 <input type="number" th:field="*{year}" min="1000" max="3000" placeholder="2008">
             </label>
-            <label>
-                <span>Stock</span>
-                <input type="number" th:field="*{stockQuantity}" min="0" max="100000" placeholder="5">
-            </label>
             <button type="submit" th:text="${editingBookId != null} ? 'Save changes' : 'Add book'"></button>
         </form>
+        <p class="empty-state" th:if="${!isAdmin}">Book management is available only for administrators.</p>
     </section>
 
     <section class="panel table-panel">
@@ -58,39 +69,200 @@
         <table>
             <thead>
             <tr>
-                <th>ID</th>
+                <th>ISBN</th>
                 <th>Title</th>
                 <th>Author</th>
                 <th>Year</th>
-                <th>Stock</th>
-                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
             <tr th:if="${#lists.isEmpty(books)}">
-                <td colspan="6" class="empty-state">No books yet. Add the first one above.</td>
+                <td colspan="4" class="empty-state">No books yet. Add the first one above.</td>
             </tr>
-            <tr th:each="book : ${books}">
-                <td th:text="${book.id}"></td>
-                <td th:text="${book.title}"></td>
-                <td th:text="${book.author}"></td>
-                <td th:text="${book.year}"></td>
-                <td th:text="${book.stockQuantity}"></td>
-                <td>
-                    <div class="actions">
-                        <form method="post" th:action="@{/books/{id}/purchase(id=${book.id})}">
-                            <button type="submit" th:disabled="${book.stockQuantity == 0}">Buy</button>
-                        </form>
-                        <a class="secondary-link" th:href="@{/books/{id}/edit(id=${book.id})}">Edit</a>
-                        <form method="post" th:action="@{/books/{id}/delete(id=${book.id})}"
-                              onsubmit="return confirm('Delete this book?');">
-                            <button type="submit" class="danger-button">Delete</button>
-                        </form>
-                    </div>
-                </td>
+            <tr th:each="book : ${books}" class="book-row">
+                <td><a class="book-link" th:href="@{/books/{id}(id=${book.id})}" th:text="${book.isbn}"></a></td>
+                <td><a class="book-link" th:href="@{/books/{id}(id=${book.id})}" th:text="${book.title}"></a></td>
+                <td><a class="book-link" th:href="@{/books/{id}(id=${book.id})}" th:text="${book.author}"></a></td>
+                <td><a class="book-link" th:href="@{/books/{id}(id=${book.id})}" th:text="${book.year}"></a></td>
             </tr>
             </tbody>
         </table>
+    </section>
+
+    <section class="modal-shell" th:if="${selectedBook != null}">
+        <a class="modal-backdrop" th:href="@{/books}" aria-label="Close book details"></a>
+        <div class="modal-panel">
+            <div class="modal-header">
+                <div>
+                    <p class="modal-kicker">Book Details</p>
+                    <h2 th:text="${selectedBook.title}"></h2>
+                </div>
+                <a class="modal-close" th:href="@{/books}" aria-label="Close">&times;</a>
+            </div>
+
+            <div th:if="${editingBookId == null}" class="book-detail-grid">
+                <div class="detail-item">
+                    <span>ISBN</span>
+                    <strong th:text="${selectedBook.isbn}"></strong>
+                </div>
+                <div class="detail-item">
+                    <span>Author</span>
+                    <strong th:text="${selectedBook.author}"></strong>
+                </div>
+                <div class="detail-item">
+                    <span>Year</span>
+                    <strong th:text="${selectedBook.year}"></strong>
+                </div>
+            </div>
+
+            <section class="stock-section">
+                <div class="section-heading comments-heading">
+                    <h3>Stock By Location</h3>
+                    <span class="count" th:text="${bookLocationStockTotal} + ' total'"></span>
+                </div>
+
+                <form method="post"
+                      th:if="${bookLocationStocksAvailable and editingStockId == null and isAdmin}"
+                      th:action="@{/books/{id}/stocks(id=${selectedBook.id})}"
+                      th:object="${stockForm}"
+                      class="stock-form">
+                    <label>
+                        <span>Location</span>
+                        <input type="text" th:field="*{locationName}" maxlength="120" placeholder="Vilnius Central">
+                    </label>
+                    <label>
+                        <span>Quantity</span>
+                        <input type="number" th:field="*{quantity}" min="0" max="100000" placeholder="4">
+                    </label>
+                    <button type="submit">Add location stock</button>
+                </form>
+
+                <form method="post"
+                      th:if="${bookLocationStocksAvailable and editingStockId != null and isAdmin}"
+                      th:action="@{/books/{bookId}/stocks/{stockId}(bookId=${selectedBook.id},stockId=${editingStockId})}"
+                      th:object="${stockForm}"
+                      class="stock-form">
+                    <label>
+                        <span>Location</span>
+                        <input type="text" th:field="*{locationName}" maxlength="120" placeholder="Vilnius Central">
+                    </label>
+                    <label>
+                        <span>Quantity</span>
+                        <input type="number" th:field="*{quantity}" min="0" max="100000" placeholder="4">
+                    </label>
+                    <button type="submit">Save location stock</button>
+                    <a class="secondary-link stock-cancel-link" th:href="@{/books/{id}(id=${selectedBook.id})}">Cancel</a>
+                </form>
+
+                <div class="flash flash-error inline-flash" th:if="${stockErrorMessage}" th:text="${stockErrorMessage}"></div>
+
+                <div class="comments-unavailable" th:if="${!bookLocationStocksAvailable}">
+                    Stock API is unavailable right now.
+                </div>
+
+                <div class="stock-list" th:if="${bookLocationStocksAvailable and !#lists.isEmpty(bookLocationStocks)}">
+                    <article class="stock-card" th:each="stock : ${bookLocationStocks}">
+                        <div class="stock-card-topline">
+                            <strong th:text="${stock.locationName}"></strong>
+                            <span class="stock-quantity" th:text="${stock.quantity} + ' copies'"></span>
+                        </div>
+                        <div class="stock-card-actions">
+                            <a class="secondary-link"
+                               th:if="${isAdmin}"
+                               th:href="@{/books/{bookId}/stocks/{stockId}/edit(bookId=${selectedBook.id},stockId=${stock.id})}">
+                                Edit
+                            </a>
+                        </div>
+                    </article>
+                </div>
+
+                <p class="empty-state comments-empty"
+                   th:if="${bookLocationStocksAvailable and #lists.isEmpty(bookLocationStocks)}">
+                    No location stock registered for this book yet.
+                </p>
+            </section>
+
+            <section class="comments-section">
+                <div class="section-heading comments-heading">
+                    <h3>Comments</h3>
+                    <span class="count" th:text="${#lists.size(bookComments)} + ' total'"></span>
+                </div>
+
+                <form method="post"
+                      th:action="@{/books/{id}/comments(id=${selectedBook.id})}"
+                      th:object="${commentForm}"
+                      class="comment-form">
+                    <p class="comment-signer">Commenting as <strong th:text="${currentUserDisplayName}"></strong>.</p>
+                    <label class="comment-form-content">
+                        <span>Comment</span>
+                        <textarea th:field="*{content}" maxlength="4000" placeholder="Write what you think about this book"></textarea>
+                    </label>
+                    <label>
+                        <span>Rating</span>
+                        <input type="number" th:field="*{rating}" min="1" max="5">
+                    </label>
+                    <button type="submit">Add comment</button>
+                </form>
+
+                <div class="flash flash-error inline-flash" th:if="${commentErrorMessage}" th:text="${commentErrorMessage}"></div>
+
+                <div class="comments-unavailable" th:if="${!bookCommentsAvailable}">
+                    Comments API is unavailable right now.
+                </div>
+
+                <div class="comments-list" th:if="${bookCommentsAvailable and !#lists.isEmpty(bookComments)}">
+                    <article class="comment-card" th:each="comment : ${bookComments}">
+                        <div class="comment-topline">
+                            <strong th:text="${comment.reviewerName}"></strong>
+                            <span class="comment-rating" th:text="${comment.rating} + ' / 5'"></span>
+                        </div>
+                        <p th:text="${comment.content}"></p>
+                    </article>
+                </div>
+
+                <p class="empty-state comments-empty"
+                   th:if="${bookCommentsAvailable and #lists.isEmpty(bookComments)}">
+                    No comments for this book yet.
+                </p>
+            </section>
+
+            <form method="post"
+                  th:if="${editingBookId != null and isAdmin}"
+                  th:action="@{/books/{id}(id=${editingBookId})}"
+                  th:object="${bookForm}"
+                  class="book-form modal-form">
+                <label>
+                    <span>ISBN</span>
+                    <input type="text" th:field="*{isbn}" placeholder="9780132350884" maxlength="32">
+                </label>
+                <button type="submit" class="secondary-button"
+                        th:formaction="@{/books/{id}/fetch-metadata(id=${editingBookId})}">Fetch author/year</button>
+                <label>
+                    <span>Title</span>
+                    <input type="text" th:field="*{title}" placeholder="Clean Code" maxlength="255">
+                </label>
+                <label>
+                    <span>Author</span>
+                    <input type="text" th:field="*{author}" placeholder="Robert C. Martin" maxlength="255">
+                </label>
+                <label>
+                    <span>Year</span>
+                    <input type="number" th:field="*{year}" min="1000" max="3000" placeholder="2008">
+                </label>
+                <button type="submit">Save changes</button>
+            </form>
+
+            <div class="modal-actions">
+                <a class="secondary-link" th:if="${isAdmin and editingBookId == null}"
+                   th:href="@{/books/{id}/edit(id=${selectedBook.id})}">Edit</a>
+                <a class="secondary-link" th:if="${editingBookId != null}"
+                   th:href="@{/books/{id}(id=${selectedBook.id})}">Cancel editing</a>
+                <form method="post" th:if="${isAdmin}" th:action="@{/books/{id}/delete(id=${selectedBook.id})}"
+                      onsubmit="return confirm('Delete this book?');">
+                    <button type="submit" class="danger-button">Delete</button>
+                </form>
+            </div>
+        </div>
     </section>
 </main>
 </body>

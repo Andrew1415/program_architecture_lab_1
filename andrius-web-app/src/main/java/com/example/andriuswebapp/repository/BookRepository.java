@@ -12,6 +12,10 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     List<Book> findAllByOrderByIdAsc();
 
+    boolean existsByIsbn(String isbn);
+
+    boolean existsByIsbnAndIdNot(String isbn, Long id);
+
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("update Book b set b.stockQuantity = b.stockQuantity - 1 where b.id = :id and b.stockQuantity > 0")
     int decrementStockIfAvailable(@Param("id") Long id);

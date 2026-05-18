@@ -28,7 +28,7 @@ class PurchaseConcurrencyIntegrationTest {
 
     @Test
     void oneHundredConcurrentPurchasesOnlyAllowOneSuccessForSingleRemainingItem() throws Exception {
-        Book scarceBook = bookRepository.save(new Book("Last Copy", "Load Test", 2026, 1));
+        Book scarceBook = bookRepository.save(new Book("9782222222222", "Last Copy", "Load Test", 2026, 1));
         int users = 100;
         CountDownLatch ready = new CountDownLatch(users);
         CountDownLatch start = new CountDownLatch(1);

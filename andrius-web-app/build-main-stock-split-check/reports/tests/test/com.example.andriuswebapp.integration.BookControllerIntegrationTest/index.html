@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - com.example.andriuswebapp.integration.BookControllerIntegrationTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<div class="breadcrumbs">
+<a class="breadcrumb" href="../index.html">all</a> &gt; 
+<span class="breadcrumb">com.example.andriuswebapp.integration.BookControllerIntegrationTest</span>
+</div>
+<div class="tab-container">
+<ul class="tabLinks">
+<li>
+<a class="successGroup" href="#">Gradle Test Run :test</a>
+</li>
+</ul>
+<div class="tab">
+<h2>Gradle Test Run :test</h2>
+<h1>BookControllerIntegrationTest</h1>
+<div class="tab-container">
+<ul class="tabLinks">
+<li>
+<a class="" href="#">summary</a>
+</li>
+<li>
+<a class="" href="#">standard output</a>
+</li>
+</ul>
+<div class="tab">
+<h2>summary</h2>
+<div>
+<div class="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox">
+<div class="counter">2</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox">
+<div class="counter">0</div>
+<p>skipped</p>
+</div>
+</td>
+<td>
+<div class="infoBox duration">
+<div class="counter">29.788s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<table class="test-results">
+<thead>
+<tr>
+<th>Child</th>
+<th hidden="">Name</th>
+<th>Tests</th>
+<th>Failures</th>
+<th>Skipped</th>
+<th>Duration</th>
+<th>Success rate</th>
+</tr>
+</thead>
+<tr>
+<td class="success">createBookPersistsNewRecord()</td>
+<td class="path" hidden="">createBookPersistsNewRecord()</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>2.776s</td>
+<td class="success">100%</td>
+</tr>
+<tr>
+<td class="success">purchaseBookReducesStockByOne()</td>
+<td class="path" hidden="">purchaseBookReducesStockByOne()</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0.229s</td>
+<td class="success">100%</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="tab">
+<h2>standard output</h2>
+<span class="code">
+<pre id="root-0-test-stdout-com.example.andriuswebapp.integration.BookControllerIntegrationTest">21:36:43.929 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.example.andriuswebapp.integration.BookControllerIntegrationTest]: BookControllerIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+21:36:44.246 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.example.andriuswebapp.AndriusWebAppApplication for test class com.example.andriuswebapp.integration.BookControllerIntegrationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.2)
+
+2026-04-12T21:36:46.135+03:00  INFO 22268 --- [    Test worker] c.e.a.i.BookControllerIntegrationTest    : Starting BookControllerIntegrationTest using Java 17.0.12 with PID 22268 (started by andri in C:\Users\andri\OneDrive - ku.lt\Uni_HomeWork\Magistras\1_Kursas_2_Semestras\Sistemu architektura\web-app-Andrew1415\andrius-web-app)
+2026-04-12T21:36:46.145+03:00  INFO 22268 --- [    Test worker] c.e.a.i.BookControllerIntegrationTest    : The following 1 profile is active: &quot;test&quot;
+2026-04-12T21:36:51.450+03:00  INFO 22268 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-12T21:36:51.656+03:00  INFO 22268 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 162 ms. Found 1 JPA repository interface.
+2026-04-12T21:36:56.130+03:00  INFO 22268 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-12T21:36:57.293+03:00  INFO 22268 --- [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2026-04-12T21:36:57.348+03:00  INFO 22268 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-12T21:36:57.425+03:00  INFO 22268 --- [    Test worker] org.flywaydb.core.FlywayExecutor         : Database: jdbc:h2:mem:testdb (H2 2.4)
+2026-04-12T21:36:57.626+03:00  WARN 22268 --- [    Test worker] o.f.c.internal.database.base.Database    : Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2026-04-12T21:36:57.743+03:00  INFO 22268 --- [    Test worker] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table &quot;PUBLIC&quot;.&quot;flyway_schema_history&quot; does not exist yet
+2026-04-12T21:36:57.754+03:00  INFO 22268 --- [    Test worker] o.f.core.internal.command.DbValidate     : Successfully validated 5 migrations (execution time 00:00.066s)
+2026-04-12T21:36:57.786+03:00  INFO 22268 --- [    Test worker] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table &quot;PUBLIC&quot;.&quot;flyway_schema_history&quot; ...
+2026-04-12T21:36:57.918+03:00  INFO 22268 --- [    Test worker] o.f.core.internal.command.DbMigrate      : Current version of schema &quot;PUBLIC&quot;: &lt;&lt; Empty Schema &gt;&gt;
+2026-04-12T21:36:57.979+03:00  INFO 22268 --- [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema &quot;PUBLIC&quot; to version &quot;1 - create books table&quot;
+2026-04-12T21:36:58.053+03:00  INFO 22268 --- [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema &quot;PUBLIC&quot; to version &quot;2 - seed books&quot;
+2026-04-12T21:36:58.070+03:00  INFO 22268 --- [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema &quot;PUBLIC&quot; to version &quot;3 - add stock quantity&quot;
+2026-04-12T21:36:58.098+03:00  INFO 22268 --- [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema &quot;PUBLIC&quot; to version &quot;4 - add books indexes&quot;
+2026-04-12T21:36:58.120+03:00  INFO 22268 --- [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema &quot;PUBLIC&quot; to version &quot;5 - add isbn to books&quot;
+2026-04-12T21:36:58.170+03:00  INFO 22268 --- [    Test worker] o.f.core.internal.command.DbMigrate      : Successfully applied 5 migrations to schema &quot;PUBLIC&quot;, now at version v5 (execution time 00:00.092s)
+2026-04-12T21:36:58.513+03:00  INFO 22268 --- [    Test worker] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-12T21:36:58.809+03:00  INFO 22268 --- [    Test worker] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.1.Final
+2026-04-12T21:37:00.628+03:00  INFO 22268 --- [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-12T21:37:00.900+03:00  INFO 22268 --- [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:h2:mem:testdb]
+	Database driver: H2 JDBC Driver
+	Database dialect: H2Dialect
+	Database version: 2.4.240
+	Default catalog/schema: TESTDB/PUBLIC
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: 100
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-12T21:37:03.303+03:00  INFO 22268 --- [    Test worker] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-12T21:37:03.385+03:00  INFO 22268 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12T21:37:03.709+03:00  INFO 22268 --- [    Test worker] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-12T21:37:09.531+03:00  INFO 22268 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-04-12T21:37:09.531+03:00  INFO 22268 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-04-12T21:37:09.555+03:00  INFO 22268 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2026-04-12T21:37:09.597+03:00  INFO 22268 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 64 ms
+2026-04-12T21:37:09.848+03:00  INFO 22268 --- [    Test worker] c.e.a.i.BookControllerIntegrationTest    : Started BookControllerIntegrationTest in 25.076 seconds (process running for 29.497)
+</pre>
+<button class="clipboard-copy-btn" aria-label="Copy to clipboard" data-copy-element-id="root-0-test-stdout-com.example.andriuswebapp.integration.BookControllerIntegrationTest">Copy</button>
+</span>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="https://www.gradle.org">Gradle 9.3.0</a> at Apr 12, 2026, 9:37:20 PM</p>
+</div>
+</div>
+</body>
+</html>

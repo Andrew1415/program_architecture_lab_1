@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.booksstoriesapi.BooksStoriesApiApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-04-12T16:40:32.726Z" hostname="ANDY-PC" time="13.913">
+  <properties/>
+  <testcase name="contextLoads()" classname="com.example.booksstoriesapi.BooksStoriesApiApplicationTests" time="2.181"/>
+  <system-out><![CDATA[19:40:33.287 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.example.booksstoriesapi.BooksStoriesApiApplicationTests]: BooksStoriesApiApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+19:40:33.559 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.example.booksstoriesapi.BooksStoriesApiApplication for test class com.example.booksstoriesapi.BooksStoriesApiApplicationTests
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.2)
+
+2026-04-12T19:40:34.768+03:00  INFO 840 --- [    Test worker] c.e.b.BooksStoriesApiApplicationTests    : Starting BooksStoriesApiApplicationTests using Java 17.0.12 with PID 840 (started by andri in C:\Users\andri\OneDrive - ku.lt\Uni_HomeWork\Magistras\1_Kursas_2_Semestras\Sistemu architektura\web-app-Andrew1415\books-stories-api)
+2026-04-12T19:40:34.782+03:00  INFO 840 --- [    Test worker] c.e.b.BooksStoriesApiApplicationTests    : No active profile set, falling back to 1 default profile: "default"
+2026-04-12T19:40:37.524+03:00  INFO 840 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-12T19:40:38.831+03:00  INFO 840 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-12T19:40:44.422+03:00  INFO 840 --- [    Test worker] c.e.b.BooksStoriesApiApplicationTests    : Started BooksStoriesApiApplicationTests in 10.419 seconds (process running for 14.242)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
