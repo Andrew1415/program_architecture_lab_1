@@ -34,5 +34,11 @@ jobs:
       - name: Make Gradle Wrapper executable
         run: chmod +x ./gradlew
 
-      - name: Build and test with Gradle Wrapper
-        run: ./gradlew build --stacktrace
+      - name: Run Gradle tests
+        run: ./gradlew test --stacktrace
+
+      - name: Package bootable JAR
+        run: ./gradlew bootJar --stacktrace
+
+      - name: Validate Docker Compose definition
+        run: docker compose -f ../compose.yaml config
