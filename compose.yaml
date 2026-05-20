@@ -1,0 +1,66 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: bookapp
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d bookapp"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  comments-api:
+    build:
+      context: ./books-stories-api
+    environment:
+      PORT: 8081
+      SPRING_DATASOURCE_URL: jdbc:sqlite:/data/books-stories.db
+      COMMENTS_API_ADMIN_KEY: compose-admin-key
+      COMMENTS_API_USER_KEY: compose-user-key
+    ports:
+      - "8081:8081"
+    volumes:
+      - comments-data:/data
+
+  stock-api:
+    build:
+      context: ./book-stock-api
+    environment:
+      PORT: 8082
+      SPRING_DATASOURCE_URL: jdbc:sqlite:/data/book-stock.db
+    ports:
+      - "8082:8082"
+    volumes:
+      - stock-data:/data
+
+  web-app:
+    build:
+      context: ./andrius-web-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      comments-api:
+        condition: service_started
+      stock-api:
+        condition: service_started
+    environment:
+      PORT: 25256
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bookapp?sslmode=disable
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      COMMENTS_API_BASE_URL: http://comments-api:8081
+      COMMENTS_API_KEY: compose-admin-key
+      STOCK_API_BASE_URL: http://stock-api:8082
+    ports:
+      - "25256:25256"
+
+volumes:
+  postgres-data:
+  comments-data:
+  stock-data:
