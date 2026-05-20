@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<main class="container">
+    <section class="panel form-panel">
+        <div class="section-heading">
+            <h1>Book Catalog Access</h1>
+        </div>
+        <p class="intro">Sign in with one of the predefined local accounts.</p>
+        <div class="flash flash-error" th:if="${param.error}">Invalid email or password.</div>
+        <div class="flash flash-success" th:if="${param.logout}">You have been signed out.</div>
+        <div class="flash flash-success">
+            <div><strong>Admin:</strong> admin@ku.lt / admin123</div>
+            <div><strong>User:</strong> user@ku.lt / user123</div>
+        </div>
+        <form method="post" th:action="@{/login}" class="book-form">
+            <label>
+                <span>Email</span>
+                <input type="email" name="username" autocomplete="username" required>
+            </label>
+            <label>
+                <span>Password</span>
+                <input type="password" name="password" autocomplete="current-password" required>
+            </label>
+            <button type="submit">Sign in</button>
+        </form>
+    </section>
+</main>
+</body>
+</html>

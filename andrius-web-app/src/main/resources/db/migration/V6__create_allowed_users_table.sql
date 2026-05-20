@@ -1,0 +1,7 @@
+CREATE TABLE allowed_users (
+    id BIGSERIAL PRIMARY KEY,
+    email VARCHAR(320) NOT NULL UNIQUE,
+    display_name VARCHAR(120) NOT NULL,
+    role VARCHAR(16) NOT NULL,
+    enabled BOOLEAN NOT NULL DEFAULT TRUE
+);
